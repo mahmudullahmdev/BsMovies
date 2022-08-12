@@ -16,16 +16,28 @@ struct MovieListItemView: View {
                 .foregroundColor(Color(UIColor.systemGray3))
                 .frame(height: 1)
             HStack {
-                AsyncImage(url: URL(string: "\(Api.IMAGE_BASEURL)\(item.poster_path ?? "")")){image in
-                    image.resizable()
-                } placeholder: {
-                    Image(systemName: "photo.fill")
-                        .renderingMode(.template)
-                        .resizable()
-                        .foregroundColor(.gray)
+                if #available(iOS 15.0, *) {
+                    AsyncImage(url: URL(string: "\(Api.IMAGE_BASEURL)\(item.poster_path ?? "")")){image in
+                        image.resizable()
+                    } placeholder: {
+                        Image(systemName: "photo.fill")
+                            .renderingMode(.template)
+                            .resizable()
+                            .foregroundColor(.gray)
+
+                    }
+                    .frame(width: (proxy?.size.width ?? 0.0)/3, height: (proxy?.size.width ?? 0.0)/2)
+                } else {
+                    // Fallback on earlier versions
+             
+                    if let data = try? Data(contentsOf: URL(string: "\(Api.IMAGE_BASEURL)\(item.poster_path ?? "")")!) {
+                        Image(uiImage: ((UIImage(data: data) ?? UIImage(systemName: "photo.fill"))!) )
+                            .resizable()
+                            .frame(width: (proxy?.size.width ?? 0.0)/3, height: (proxy?.size.width ?? 0.0)/2)
+                    }
+                
                     
                 }
-                .frame(width: (proxy?.size.width ?? 0.0)/3, height: (proxy?.size.width ?? 0.0)/2)
                 
                 VStack(alignment:.leading, spacing: 10) {
                     Text(item.title ?? "")

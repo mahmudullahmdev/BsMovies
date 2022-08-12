@@ -41,7 +41,7 @@ extension APIRequest: NetworkRequest {
             let wrapper = try decoder.decode(Resource.ModelType.self, from: data)
             return wrapper
         }
-        catch let err {
+        catch _ {
            // print("Failed to decode JSON \(err)")
             return nil
         }
