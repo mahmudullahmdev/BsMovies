@@ -42,7 +42,7 @@ extension APIRequest: NetworkRequest {
             return wrapper
         }
         catch let err {
-            print("Failed to decode JSON \(err)")
+           // print("Failed to decode JSON \(err)")
             return nil
         }
     }
